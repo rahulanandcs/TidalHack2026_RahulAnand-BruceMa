@@ -3,7 +3,7 @@ Test script for resume parser
 Run this to verify the parser is working
 """
 
-from resume_parser import ResumeParser, ContactInfo, Education, Experience
+from archive import ResumeParser, ContactInfo, Education, Experience
 import json
 
 

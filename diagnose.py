@@ -5,7 +5,7 @@ Use this to debug why sections aren't being detected
 
 import sys
 from pathlib import Path
-from resume_parser import ResumeParser
+from archive import ResumeParser
 
 
 def diagnose_resume(pdf_path: str):
