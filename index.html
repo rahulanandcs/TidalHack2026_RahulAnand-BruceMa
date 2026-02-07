@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>mycollegeapp</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta charset="UTF-8">
+        <link rel="icon"  href="images/mycollegeappLogoNoWords.png">
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="navbar.css">
+        <script src="https://kit.fontawesome.com/c453ab086d.js" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    </head>
+    <body>
+        <header id="header">
+            <div id="navbarRoot">
+                <nav id="navbar">
+                    <div id="LogoNav">
+                        <a href="index.html" rel="noopener noreferrer">
+                            <img id="logo" src="images/mycollegappShrunk.png" alt="mycollegeappLogo">
+                        </a>
+                    </div>
+
+
+                    <div id="userDiv">
+                        <img id="userLogo" src="images/bwProfile.png">
+                    </div>
+
+
+                    <!-- Dropdown -->
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <!-- Logged Out View -->
+                        <div id="loggedOutView">
+                            <div class="signin-title"> Sign In </div>
+                            <div id="googleSignInBtn"></div>
+                        </div>
+
+                        <!-- Logged In View -->
+                        <div id="loggedInView" style="display:none;">
+                            <h4 id="userName">User Name</h4>
+                            <p id="userEmail">email@example.com</p>
+                            <div class="divider"></div>
+                            <div class="dropdown-item" id="settingsBtn"> Settings </div>
+                            <div class="dropdown-item" id="signOutBtn"> Sign Out </div>
+                        </div>
+                    </div>
+
+
+                </nav>
+            </div>
+        </header>
+
+        <div id="root"></div>
+
+        <main id="mainContent">
+            <div id="uploadResume">
+                <p id="uploadHeader">Upload Resume</p>
+                <p id="uploadSubheader">Upload you resume to auto fill your profile information</p>
+                <div id="dropBox">
+                    <img id="fileIcon" src="images/uploadFileIcon.png">
+                    <p id="dropBoxp1">Drop your pdf here</p>
+                    <p id="dropBoxp2">or click to upload from your device</p>
+                    <p id="dropBoxp3">(Maximum File Size: 6.7 MB)</p>
+                    <input type="file" id="resumeInput" accept="application/pdf" hidden>
+                    <p id="fileName"></p>
+                </div>
+            </div>
+        </main>
+
+        <script>
+            function scrollSlider(direction) 
+            {
+                const slider = document.getElementById('imageSlider');
+                const scrollAmount = 320; // adjust based on image width + gap
+                slider.scrollBy
+                ({
+                    left: direction * scrollAmount,
+                    behavior: 'smooth'
+                });
+            }
+        </script>
+
+        <script type="text/babel" src="react.js"></script>
+        <script type="text/babel" src="app.js"></script>
+
+        <script>
+            document.getElementById('fileIcon').ondragstart = function() { return false; };
+        </script>
+
+
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+            import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-analytics.js";
+            import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+            import { getStorage } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-storage.js";
+            import { getAuth, signInWithCredential, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+
+
+            // Your web app's Firebase configuration
+            const firebaseConfig = {
+            apiKey: "AIzaSyCGYTToOL5lChzDml16AsoeKhNNmLXr91k",
+            authDomain: "mycollegeapp-476006.firebaseapp.com",
+            projectId: "mycollegeapp-476006",
+            storageBucket: "mycollegeapp-476006.firebaseapp.com",
+            messagingSenderId: "217167150963",
+            appId: "1:217167150963:web:2b0b5f8023a71fa1788f06"
+            };
+
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            
+
+            // Assign to window so your upload script can use it
+            window.db = getFirestore(app);
+            window.firebaseStorage = getStorage(app);
+            window.auth = getAuth(app);
+window.signInWithCredential = signInWithCredential;
+
+            window.GoogleAuthProvider = GoogleAuthProvider;
+        </script>
+
+
+
+
+
+        <script>
+            //set up constants and assign it to ids
+            const userDiv = document.getElementById("userDiv");
+            const userLogo = document.getElementById("userLogo");
+            const profileDropdown = document.getElementById("profileDropdown");
+            const loggedOutView = document.getElementById("loggedOutView");
+            const loggedInView = document.getElementById("loggedInView");
+            const googleSignInBtn = document.getElementById("googleSignInBtn");
+            const userNameEl = document.getElementById("userName");
+            const userEmailEl = document.getElementById("userEmail");
+            const signOutBtn = document.getElementById("signOutBtn");
+
+            
+            let user = null;
+            const pastelColors = ['#FFE0E0', '#f7f4cd', '#E8EAF6', '#FFF3E0', '#E8F5E9'];
+
+            
+
+            
+
+
+
+            function updateUIForSignedInUser() {
+            if (!user) return;
+
+            userNameEl.textContent = user.name;
+            userNameEl.style.marginTop = ".33rem";
+            userNameEl.style.marginBottom = ".5rem";
+            userEmailEl.textContent = user.email;
+            userEmailEl.style.marginTop = ".33rem";
+            loggedOutView.style.display = "none";
+            loggedInView.style.display = "block";
+
+            // Avatar setup
+            const initial = user.name.charAt(0).toUpperCase();
+            const bgColor = pastelColors[Math.floor(Math.random() * pastelColors.length)];
+            const textColor = bgColor === "#000000" ? "#fff" : "#000";
+
+            const avatar = document.createElement("div");
+            avatar.classList.add("avatar");
+            avatar.textContent = initial;
+            avatar.style.height = "2.8rem";
+            avatar.style.width = "2.8rem";
+            avatar.style.borderRadius = "300px";
+            avatar.style.backgroundColor = bgColor;
+            avatar.style.display = "flex";
+            avatar.style.alignItems = "center";
+            avatar.style.justifyContent = "center";
+            avatar.style.fontSize = "22px";
+            avatar.style.fontWeight = "bold";
+            avatar.style.transition = "transform 0.05s ease-in-out";
+            avatar.style.color = textColor;
+
+            avatar.addEventListener("mouseenter", () => {
+                avatar.style.transform = "scale(1.05)";
+            });
+            avatar.addEventListener("mouseleave", () => {
+                avatar.style.transform = "scale(1)";
+            });
+
+            // ... inside the function
+
+            const currentLogo = userDiv.querySelector('#userLogo') || userDiv.querySelector('.avatar');
+
+            // If the original userLogo (img) exists, replace it.
+            if (currentLogo && currentLogo.id === 'userLogo') {
+                userDiv.replaceChild(avatar, currentLogo);
+            // If an old avatar already exists, replace that one.
+            } else if (currentLogo && currentLogo.classList.contains('avatar')) {
+                userDiv.replaceChild(avatar, currentLogo);
+            } else {
+                // Fallback: If nothing is there, just append the new avatar.
+                userDiv.appendChild(avatar);
+            }
+            }
+
+
+
+            /* 1. Initialize Google Sign-In */
+            window.onload = function() {
+            google.accounts.id.initialize({
+                client_id: "217167150963-rsfriq586e72rb60kmn76u1q3e3cgcpj.apps.googleusercontent.com", 
+                callback: handleCredentialResponse,
+                // auto_select: true   // ensures that the user stays signed in when first logging in (so not pain in the butt)
+            });
+
+            google.accounts.id.renderButton(
+                googleSignInBtn,
+                { theme: "outline", size: "large", text: "continue_with", width: 220 }
+            );
+
+
+
+            // 2. silent sign-in automatically
+            google.accounts.id.prompt(); // signs in silently if the user granted permission
+            };
+
+
+            /* 3. Handle Google Credential Response */
+            async function handleCredentialResponse(response) {
+            const data = parseJwt(response.credential);
+            user = { name: data.name, email: data.email };
+
+            try {
+                // 1️⃣ Create Firebase credential from Google ID token
+                const credential = window.GoogleAuthProvider.credential(response.credential);
+
+                // 2️⃣ Sign in with Firebase
+                const result = await signInWithCredential(window.auth, credential);
+
+                console.log("✅ Firebase Auth sign-in successful for:", result.user.email);
+
+                localStorage.setItem("user", JSON.stringify(user));
+
+                // 3️⃣ Update UI once Firebase confirms the sign-in
+                updateUIForSignedInUser();
+            } catch (error) {
+                console.error("❌ Firebase Auth sign-in failed:", error);
+                alert("Firebase Auth sign-in failed. Check console.");
+            }
+            }
+
+
+            /* Helper: Decodes Google Cloud JWT Token */
+            function parseJwt(token) {
+            const base64Url = token.split(".")[1];
+            const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+            const jsonPayload = decodeURIComponent(atob(base64).split("").map(function(c) {
+                return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(""));
+            return JSON.parse(jsonPayload);
+            }
+
+            /* 3.5 Restore User If Already Logged In (on page load) */
+            
+
+            /* Helper: re-creates the UI for a saved user */
+            
+
+
+
+            /* 4. Toggle dropdown visibility */
+            userDiv.addEventListener("click", (e) => {
+            e.stopPropagation();
+            profileDropdown.classList.toggle("show");
+            });
+
+            /* 5. Close dropdown if clicking outside */
+            document.addEventListener("click", (e) => {
+            if (!userDiv.contains(e.target) && !profileDropdown.contains(e.target)) {
+                profileDropdown.classList.remove("show");
+            }
+            });
+
+
+            /* 6. Sign Out Logic */
+            signOutBtn.addEventListener("click", () => {
+            user = null;
+            localStorage.removeItem("user");   // Clear the saved login from 3.5
+            google.accounts.id.disableAutoSelect();
+            window.auth.signOut();
+
+            /* Transition Between Signed In and Out */
+            
+
+            // Revert To The B&W Profile Img
+            const img = document.createElement("img");
+            img.id = "userLogo";
+            img.src = "images/bwProfile.png";
+            img.alt = "Profile Icon";
+            img.style.height = "3rem";
+            img.style.borderRadius = "300px";
+            img.style.boxShadow = "0px 4px 4px rgba(255, 255, 255, 0.25)";
+            img.style.objectFit = "cover";
+
+            const oldAvatar = userDiv.querySelector(".avatar");
+            if (oldAvatar) userDiv.replaceChild(img, oldAvatar);
+
+            loggedOutView.style.display = "block";
+            loggedInView.style.display = "none";
+            profileDropdown.classList.remove("show");
+
+            localStorage.removeItem("user");
+            });
+        </script>
+
+        
+
+        <script type="module">
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+    import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+    import { ref, uploadBytes } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-storage.js";
+
+    // 1. ✅ FIX: Define DOM elements globally so all functions can see them.
+    const dropBox = document.getElementById("dropBox");
+    const fileInput = document.getElementById("resumeInput");
+    const fileNameDisplay = document.getElementById("fileName");
+
+    // 2. Setup Listeners Function (Now works using global variables)
+    function setupFileUploadListeners() {
+        // Click to open file dialog
+        dropBox.addEventListener("click", () => fileInput.click());
+
+        // File selected via click
+        fileInput.addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if (file) handleFileUpload(file);
+        });
+
+        // Drag and Drop Logic
+        dropBox.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            dropBox.style.backgroundColor = "rgba(200, 230, 255, 0.5)";
+        });
+
+        dropBox.addEventListener("dragleave", () => {
+            dropBox.style.backgroundColor = "transparent";
+        });
+
+        dropBox.addEventListener("drop", (e) => {
+            e.preventDefault();
+            dropBox.style.backgroundColor = "transparent";
+            const file = e.dataTransfer.files[0];
+            if (file) handleFileUpload(file);
+        });
+
+        console.log("✅ File upload listeners initialized.");
+    }
+    
+    // 3. Handle File Upload Logic
+    async function handleFileUpload(file) {
+    if (file.type !== "application/pdf") {
+        alert("Please upload a PDF file only.");
+        return;
+    }
+    if (file.size > 6.7 * 1024 * 1024) {
+        alert("File exceeds 6.7 MB limit.");
+        return;
+    }
+
+    fileNameDisplay.textContent = `📄 Uploading ${file.name}...`;
+
+    const firebaseUser = window.auth.currentUser;
+    let currentUserData = window.user;
+    
+    if (!firebaseUser || !currentUserData) { 
+        fileNameDisplay.textContent = "❌ Please sign in to upload.";
+        alert("Please sign in before uploading your resume.");
+        return;
+    }
+
+    const userUid = firebaseUser.uid; 
+    const userEmail = firebaseUser.email;
+
+    try {
+        // Create storage path
+        const filePath = `resumes/${userUid}/${file.name}`;
+        const storageRef = ref(window.firebaseStorage, filePath);
+
+        // Upload file
+        await uploadBytes(storageRef, file);
+
+        // ✅ Don't get download URL - just store the path
+        await setDoc(doc(window.db, "users", userEmail), {
+            name: currentUserData.name,
+            email: userEmail,
+            resumePath: filePath,  // Store path instead of URL
+            resumeName: file.name,
+            uploadedBy: userUid,
+            timestamp: new Date().toISOString()
+        }, { merge: true });
+
+        fileNameDisplay.textContent = `✅ Uploaded: ${file.name}`;
+        alert("Resume uploaded successfully! 🎉");
+        
+    } catch (error) {
+        console.error("Upload failed:", error);
+        fileNameDisplay.textContent = "❌ Upload failed.";
+        alert(`Upload failed: ${error.message}`);
+    }
+}
+
+
+    
+    // 4. Auth State Listener (Starts the process)
+onAuthStateChanged(window.auth, (firebaseUser) => {
+    // Initialize listeners ONLY ONCE when auth state is first determined
+    if (!window.uploadListenersSetup) {
+        setupFileUploadListeners();
+        window.uploadListenersSetup = true;
+    }
+
+    if (firebaseUser) {
+        console.log("User is signed in (via Firebase):", firebaseUser.uid);
+        
+        // ✅ FIX 1: Set the global 'user' variable using Firebase data
+        window.user = { 
+            name: firebaseUser.displayName || firebaseUser.email.split('@')[0], // Use Firebase name or email prefix
+            email: firebaseUser.email 
+        };
+        
+        // ✅ FIX 2: Update the UI
+        updateUIForSignedInUser();
+        
+    } else {
+        console.log("No user signed in. Uploads will be blocked by logic.");
+        window.user = null;
+        // Optional: Reset UI to logged out state if needed here
+    }
+});
+    
+
+    // 5. ❌ FIX: The getAuthReadyUser() function is removed as it's no longer needed.
+</script>
+
+
+
+    </body>
+</html>
