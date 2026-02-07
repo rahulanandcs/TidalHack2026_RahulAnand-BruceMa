@@ -25,7 +25,8 @@ try:
         nltk.download('words', quiet=True)
         print("✓ NLTK data downloaded!")
     
-    PYRESPARSER_AVAILABLE = False
+    from pyresparser import ResumeParser as PyResumeParser
+    PYRESPARSER_AVAILABLE = True
 except ImportError as e:
     PYRESPARSER_AVAILABLE = False
     import PyPDF2
@@ -209,7 +210,7 @@ class FinalResumeParser:
                 i += 1
                 continue
             
-            # First line is likely institution
+            # First line is likely institution (with optional location)
             institution = line
             degree = ""
             year = None
@@ -226,19 +227,31 @@ class FinalResumeParser:
                 if any(deg in next_line for deg in degree_indicators):
                     degree = next_line
                     
-                    # Look for year
-                    for j in range(i, min(i + 4, len(section_lines))):
+                    # Look for year in surrounding lines
+                    for j in range(i, min(i + 5, len(section_lines))):
                         check_line = section_lines[j]
-                        year_match = re.search(r'(?:Expected\s+in\s+)?(?:May|June|August|December|Jan|Feb|Mar|Apr|Jul|Sep|Oct|Nov)?\s*(\d{4})', check_line)
+                        # Match year patterns: "Expected in May 2029", "May 2029", "2025-2029"
+                        year_match = re.search(r'(?:Expected\s+in\s+)?(?:May|June|August|December|Jan|Feb|Mar|Apr|Jul|Sep|Oct|Nov)?\s*(\d{4})(?:\s*[-–]\s*(?:May|June|August|December|Jan|Feb|Mar|Apr|Jul|Sep|Oct|Nov)?\s*\d{4})?', check_line, re.IGNORECASE)
                         if year_match:
-                            year = check_line
+                            # Get the full match including "Expected in" if present
+                            full_match = check_line[year_match.start():year_match.end()].strip()
+                            # Check if "Expected" is before the match
+                            before_text = check_line[:year_match.start()].lower()
+                            if 'expected' in before_text:
+                                year = "Expected in " + full_match
+                            else:
+                                year = full_match
                             break
                     
-                    # Check for additional info
+                    # Check for additional info (honors, GPA, etc.) on next line
                     if i + 2 < len(section_lines):
                         potential_additional = section_lines[i + 2]
-                        if not any(kw in potential_additional for kw in ['University', 'College', 'Institute', 'School']):
-                            additional_info = potential_additional
+                        # Don't include if it looks like a new institution
+                        if not any(kw in potential_additional for kw in ['University', 'College', 'Institute', 'School']) and \
+                           not potential_additional.startswith('BS') and not potential_additional.startswith('BA'):
+                            # But do include if it mentions honors, GPA, etc
+                            if any(kw in potential_additional.lower() for kw in ['honor', 'gpa', 'distinction', 'dean', 'scholarship']):
+                                additional_info = potential_additional
                     
                     education_list.append(Education(
                         degree=degree,
@@ -281,47 +294,87 @@ class FinalResumeParser:
         if not section_lines:
             return experience_list
         
+        # Date pattern for matching duration
+        date_pattern = r'(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{4}\s*[-–—]\s*(Present|January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|present|\d{4})'
+        
         i = 0
         while i < len(section_lines):
             line = section_lines[i]
             
+            # Skip empty lines and bullet points at this level
             if not line or line.startswith('●') or line.startswith('•') or line.startswith('-'):
                 i += 1
                 continue
             
-            # Company/Organization name
+            # Check if this line contains a date (might be duration on its own line)
+            if re.search(date_pattern, line):
+                # This is likely a standalone date line, skip it
+                i += 1
+                continue
+            
+            # This should be a company/organization name
             company = line
             title = ""
             duration = None
             description = []
             
-            # Next line is usually title with or without date
+            # Look at next line for title and/or duration
             if i + 1 < len(section_lines):
                 next_line = section_lines[i + 1]
                 
-                # Date pattern
-                date_pattern = r'(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{4}\s*[-–—]\s*(Present|January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|present|\d{4})'
+                # Skip if next line is a bullet point (means we got company but no title)
+                if next_line.startswith('●') or next_line.startswith('•') or next_line.startswith('-'):
+                    # Company only, no title, collect bullets
+                    i += 1
+                    while i < len(section_lines) and (section_lines[i].startswith('●') or 
+                                                     section_lines[i].startswith('•') or 
+                                                     section_lines[i].startswith('-')):
+                        bullet = section_lines[i].lstrip('●•-').strip()
+                        description.append(bullet)
+                        i += 1
+                    
+                    experience_list.append(Experience(
+                        title="",
+                        company=company,
+                        duration=None,
+                        description=description if description else None
+                    ))
+                    continue
+                
+                # Check if next line has a date pattern
                 date_match = re.search(date_pattern, next_line)
                 
                 if date_match:
+                    # Next line contains title and duration
                     duration = date_match.group(0)
-                    title = next_line.replace(duration, '').strip().strip('-–— ')
+                    # Everything before the date is the title
+                    title = next_line[:date_match.start()].strip().strip('-–— ')
                     i += 2
                 else:
+                    # Next line is just the title
                     title = next_line
                     i += 2
+                    
+                    # Check if the line after that is a duration-only line
+                    if i < len(section_lines):
+                        potential_date_line = section_lines[i]
+                        if re.search(date_pattern, potential_date_line) and not potential_date_line.startswith('●'):
+                            duration = potential_date_line.strip()
+                            i += 1
             else:
                 i += 1
             
-            # Collect bullet points
+            # Collect bullet points (descriptions)
             while i < len(section_lines) and (section_lines[i].startswith('●') or 
                                              section_lines[i].startswith('•') or 
                                              section_lines[i].startswith('-')):
                 bullet = section_lines[i].lstrip('●•-').strip()
-                description.append(bullet)
+                if bullet:  # Only add non-empty bullets
+                    description.append(bullet)
                 i += 1
             
-            if title or company:
+            # Only add if we have at least a company or title
+            if company or title:
                 experience_list.append(Experience(
                     title=title,
                     company=company,
@@ -481,18 +534,46 @@ class FinalResumeParser:
             print("Using custom parser...")
         
         # Extract contact info
-        name_match = re.search(r'^([A-Z][a-z]+(?:\s+[A-Z][a-z]+)+)', text.split('\n')[0])
+        # Try to find name - check first few lines
+        name = None
+        first_lines = text.split('\n')[:5]
+        for line in first_lines:
+            line = line.strip()
+            # Skip lines with email or phone
+            if '@' in line or re.search(r'\d{3}[-.\s]?\d{3}', line):
+                continue
+            # Look for name pattern (2-4 words, can be all caps or title case)
+            words = line.split()
+            if 2 <= len(words) <= 4:
+                # Check if it's likely a name (not too long, no special chars)
+                if all(w.replace('.', '').replace(',', '').isalpha() for w in words):
+                    name = line
+                    break
+        
+        if not name:
+            # Fallback to first line
+            name = first_lines[0].strip() if first_lines else None
+        
         email_match = re.search(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', text)
         phone_match = re.search(r'\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}', text)
         linkedin_match = re.search(r'(?:https?://)?(?:www\.)?linkedin\.com/in/[\w-]+', text, re.IGNORECASE)
         github_match = re.search(r'(?:https?://)?(?:www\.)?github\.com/[\w-]+', text, re.IGNORECASE)
         
+        # Extract location from first few lines
+        location = None
+        for line in first_lines:
+            location_match = re.search(r'([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*),\s*([A-Z]{2})', line)
+            if location_match:
+                location = f"{location_match.group(1)}, {location_match.group(2)}"
+                break
+        
         contact = ContactInfo(
-            name=name_match.group(1) if name_match else text.split('\n')[0].strip(),
+            name=name,
             email=email_match.group(0) if email_match else None,
             phone=phone_match.group(0) if phone_match else None,
             linkedin=linkedin_match.group(0) if linkedin_match else ("LinkedIn profile mentioned" if 'linkedin' in text.lower() else None),
-            github=github_match.group(0) if github_match else ("GitHub profile mentioned" if 'github' in text.lower() else None)
+            github=github_match.group(0) if github_match else ("GitHub profile mentioned" if 'github' in text.lower() else None),
+            location=location
         )
         
         # Extract sections

@@ -1,15 +1,14 @@
 //borrow
 const menuItems = [
-  { label: 'Profile', link: 'index.html', icon: 'images/maleProfileIcon.png' },
-  { label: 'AI Chatbot', link: 'chatbot.html', icon: 'images/chatbotIcon.png' },
-  { label: 'Application', link: '/goon', icon: 'images/applicationIconBg.png' },
-  { label: 'Resources', link: '/goon', icon: 'images/resourcesIcon.png' }
+  { label: 'About', link: 'chatbot.html', icon: 'images/applicationIconBg.png' },
+  { label: 'Resume', link: 'index.html', icon: 'images/resumeIcon.png' },
+  { label: 'Chatbot', link: 'chatbot.html', icon: 'images/chatbotIcon.png' },
 ];
 
 const socialItems = [
   { label: 'Instagram', link: 'https://instagram.com' },
   { label: 'LinkedIn - Rahul Anand', link: 'https://linkedin.com' },
-  { label: 'LinkedIn - Akhil Kotha', link: 'https://linkedin.com' }
+  { label: 'LinkedIn - Bruce Ma', link: 'https://linkedin.com' }
 ];
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

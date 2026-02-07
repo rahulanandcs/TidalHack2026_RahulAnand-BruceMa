@@ -1,5 +1,4 @@
 from google import genai
-from PIL import Image
 
 client = genai.Client(api_key = "insert_key_here")
 

@@ -22,7 +22,7 @@
                 <nav id="navbar">
                     <div id="LogoNav">
                         <a href="index.html" rel="noopener noreferrer">
-                            <img id="logo" src="images/mycollegappShrunk.png" alt="mycollegeappLogo">
+                            <img id="logo" src="images/careerCompassLogo.png" alt="careerCompassLogo">
                         </a>
                     </div>
 
@@ -60,12 +60,11 @@
         <main id="mainContent">
             <div id="uploadResume">
                 <p id="uploadHeader">Upload Resume</p>
-                <p id="uploadSubheader">Upload you resume to auto fill your profile information</p>
+                <p id="uploadSubheader">Upload you resume to recieve tailored advice!</p>
                 <div id="dropBox">
                     <img id="fileIcon" src="images/uploadFileIcon.png">
                     <p id="dropBoxp1">Drop your pdf here</p>
                     <p id="dropBoxp2">or click to upload from your device</p>
-                    <p id="dropBoxp3">(Maximum File Size: 6.7 MB)</p>
                     <input type="file" id="resumeInput" accept="application/pdf" hidden>
                     <p id="fileName"></p>
                 </div>
@@ -119,8 +118,7 @@
             window.db = getFirestore(app);
             window.firebaseStorage = getStorage(app);
             window.auth = getAuth(app);
-window.signInWithCredential = signInWithCredential;
-
+            window.signInWithCredential = signInWithCredential;
             window.GoogleAuthProvider = GoogleAuthProvider;
         </script>
 
