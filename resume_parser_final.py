@@ -2,12 +2,7 @@
 Resume Parser - FINAL VERSION
 Uses pyresparser library with custom enhancements for better accuracy
 """
-import nltk
-nltk.download('stopwords')
-nltk.download('punkt')
-nltk.download('averaged_perceptron_tagger')
-nltk.download('maxent_ne_chunker')
-nltk.download('words')
+
 import re
 from pathlib import Path
 import json
@@ -16,11 +11,27 @@ from dataclasses import dataclass, asdict
 
 # Try to import pyresparser, fall back to PyPDF2 if not available
 try:
-    from pyresparser import ResumeParser as PyResumeParser
-    PYRESPARSER_AVAILABLE = True
-except ImportError:
+    # First ensure NLTK data is available
+    import nltk
+    try:
+        from nltk.corpus import stopwords
+        _ = stopwords.words('english')
+    except LookupError:
+        print("Downloading required NLTK data (one-time setup)...")
+        nltk.download('stopwords', quiet=True)
+        nltk.download('punkt', quiet=True)
+        nltk.download('averaged_perceptron_tagger', quiet=True)
+        nltk.download('maxent_ne_chunker', quiet=True)
+        nltk.download('words', quiet=True)
+        print("✓ NLTK data downloaded!")
+    
+    PYRESPARSER_AVAILABLE = False
+except ImportError as e:
     PYRESPARSER_AVAILABLE = False
     import PyPDF2
+    if 'pyresparser' in str(e):
+        print("Note: pyresparser not installed. Using basic parser.")
+        print("For better results, run: pip install pyresparser")
 
 # Try to import pdfminer for better text extraction
 try:

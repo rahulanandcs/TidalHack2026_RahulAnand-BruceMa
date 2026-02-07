@@ -1,0 +1,244 @@
+{
+  "contact": {
+    "name": "R",
+    "email": null,
+    "phone": null,
+    "linkedin": "LinkedIn profile mentioned",
+    "github": "GitHub profile mentioned",
+    "location": null
+  },
+  "skills": [
+    "Java",
+    "Python",
+    "exposed",
+    "to",
+    "various",
+    "other",
+    "programming",
+    "languag es",
+    "game",
+    "developmen t",
+    "robotics",
+    "Project",
+    "and",
+    "Collaboration"
+  ],
+  "education": [
+    {
+      "degree": "Texas A&M Univ ersity, Colleg e Station, TX                                                                                                                                                                       Expect ed gradua tion in 2029 with Bachelor of Scienc e in Comput er Engineering, GPA 4.0 Relevant Cour sework: Python Programming , C++ Programming",
+      "institution": "",
+      "year": null,
+      "gpa": null,
+      "additional_info": null
+    },
+    {
+      "degree": "Technical",
+      "institution": "",
+      "year": null,
+      "gpa": null,
+      "additional_info": null
+    }
+  ],
+  "experience": [
+    {
+      "title": "\u25cf",
+      "company": "Aggies Invent Pantex",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "efforts",
+      "company": "Led",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "a",
+      "company": "in",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "robotic",
+      "company": "team",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "developmen t",
+      "company": "project",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "a",
+      "company": "addr essing",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "statemen t",
+      "company": "need",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "safe",
+      "company": "for",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "of",
+      "company": "handling",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "explosiv e",
+      "company": "high",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "for",
+      "company": "materials",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "\u25cf",
+      "company": "Pantex.",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "is",
+      "company": "Prototype",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "to",
+      "company": "designed",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "about",
+      "company": "handle",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "times",
+      "company": "3",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "weigh t",
+      "company": "the",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "high",
+      "company": "of",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "materials",
+      "company": "explosiv e",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "the",
+      "company": "as",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "typic ally",
+      "company": "compan y",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "\u25cf",
+      "company": "transfers.",
+      "duration": null,
+      "description": [
+        ""
+      ]
+    },
+    {
+      "title": "in",
+      "company": "Aggies",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "-",
+      "company": "Tech",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "technology",
+      "company": "Business",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "program",
+      "company": "certific ate",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "leader ship,",
+      "company": "emphasizing",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "developmen t,",
+      "company": "professional",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "affiliations,",
+      "company": "indus try",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "and",
+      "company": "mark eting,",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "rigor.",
+      "company": "academic",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "Organizations",
+      "company": "University",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "Other",
+      "company": "TAMU ThinkT ank Texas A&M Computing Socie ty Aggie Compe titive Programming Club",
+      "duration": null,
+      "description": null
+    }
+  ]
+}
