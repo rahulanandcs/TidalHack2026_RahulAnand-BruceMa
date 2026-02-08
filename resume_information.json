@@ -1,0 +1,124 @@
+{
+  "contact": {
+    "name": "",
+    "email": "rahulanandbus@gmail.com",
+    "phone": "(214) 557-1888",
+    "linkedin": "LinkedIn profile mentioned",
+    "github": "GitHub profile mentioned",
+    "location": null
+  },
+  "skills": [
+    "Java",
+    "Python",
+    "JavaScript",
+    "React",
+    "HTML",
+    "CSS",
+    "GitHub",
+    "Visual Studio Code",
+    "Figma",
+    "Premiere Pro",
+    "Photoshop",
+    "Canva",
+    "Excel",
+    "Word",
+    "Powerpoint"
+  ],
+  "education": [
+    {
+      "degree": "BS: Computer Science | Craig & Galen Brown Engineering Honors",
+      "institution": "Texas A&M University | College Station, TX",
+      "year": null,
+      "gpa": null,
+      "additional_info": null
+    }
+  ],
+  "experience": [
+    {
+      "title": "Co-Founder & Frontend Developer",
+      "company": "Syncria",
+      "duration": null,
+      "description": [
+        "Co-founded AI-powered platform that consolidates student data from multiple sources, organizing it by class and recency",
+        "Developing the site from scratch, including frontend architecture and SQL databases using React, TypeScript, and Python",
+        "Participating in business operations, including market research, strategy planning, and hiring an intern for data scraping",
+        "Designed Figma prototypes to refine UI/UX and launched a social media marketing campaign across Instagram and Shorts"
+      ]
+    },
+    {
+      "title": "Freshman Engineer",
+      "company": "FLiNT",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "Front-End Development Intern",
+      "company": "TechMeKid",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "AI Agent Development Intern",
+      "company": "NeuralSeek",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "Web Developer & Outreach",
+      "company": "Verses & Vibes Nonprofit",
+      "duration": null,
+      "description": [
+        "Conceptualized and proposed a $1,000 engineering project to faculty for a street-legal vehicle, integrating Google Coral TPU,"
+      ]
+    },
+    {
+      "title": "",
+      "company": "dual-camera sensors, and microcontroller systems to enable lane-assist functionality and real-time autonomous control",
+      "duration": null,
+      "description": [
+        "Relaunched Texas A&M-affiliated club website with leadership, improving UX and engagement for hundreds of annual visitors",
+        "Redesigned a client\u2019s website through leading development of the events page, and generated a 30% increase in impressions",
+        "Translated Figma prototypes into responsive, accessible layouts using HTML, CSS, and JavaScript",
+        "Collaborated with 20+ developers through GitHub, code reviews through Slack, and pipeline planning over Zoom",
+        "Built and deployed a functional AI agent that parses YouTube Music playlists and converts them into .txt files",
+        "Gained hands-on training in generative AI and prompt engineering; earned Level 2 AI Agent Builder Certification",
+        "Expanded professional network through collaborative projects and industry mentorship"
+      ]
+    },
+    {
+      "title": "Kumon",
+      "company": "Integrated mobile support for highlighting events, volunteer opportunities, and awareness; 20+ weekly visits",
+      "duration": null,
+      "description": null
+    },
+    {
+      "title": "Flower Mound, TX",
+      "company": "Center Assistant",
+      "duration": "December 2022 \u2013 December 2024",
+      "description": [
+        "Promoted twice within two years for consistent performance, accountability, and increased responsibilities",
+        "Taught kids aged 5 \u2013 16 in Math topics ranging from arithmetic to calculus, utilized Kumon\u2019s proprietary software and Excel"
+      ]
+    },
+    {
+      "title": "",
+      "company": "UT Austin IOS App Development Camp",
+      "duration": null,
+      "description": [
+        "Completed 125+ hours of Swift training under Prof. William Bulko in July 2024"
+      ]
+    },
+    {
+      "title": "Academic Competitions & Recognition",
+      "company": "MHS Stocks Club \u2013 Vice President",
+      "duration": null,
+      "description": [
+        "Organized virtual stock market competitions and grew membership to 30+ through targeted promotional flyers",
+        "Social Studies UIL \u2013 Captain | District 3rd, Region 5th (2023\u20132024)",
+        "DECA | State Competitor (2024\u20132025) and Academic Decathlon | Regional Medalist, Gold Team Medalist (2024)",
+        "National Merit Finalist for being top 1% of over 1.5 million high school seniors and received President\u2019s Endowed Scholarship"
+      ]
+    }
+  ],
+  "total_pages": 1
+}

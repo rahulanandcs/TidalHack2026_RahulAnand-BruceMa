@@ -1,0 +1,12 @@
+{
+  "url": "https://tamu-csm.symplicity.com/events/4e14310febad2eb8767770a213251a7f/employers/01f5016d99e193977c1bf344ba0b0a15",
+  "scraped_at": "2026-02-08T02:30:08.829630",
+  "company_name": "1Finity, a Fujitsu Company",
+  "tags": null,
+  "about": null,
+  "we_are_looking_for": null,
+  "organization_profile": {},
+  "event_details": {},
+  "all_text_content": null,
+  "error": "Message: no such element: Unable to locate element: {\"method\":\"css selector\",\"selector\":\"space-top-xs text-truncate\"}\n  (Session info: chrome=144.0.7559.133); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#nosuchelementexception\nStacktrace:\n0   chromedriver                        0x0000000102db7928 cxxbridge1$str$ptr + 3098388\n1   chromedriver                        0x0000000102dafc04 cxxbridge1$str$ptr + 3066352\n2   chromedriver                        0x000000010289283c _RNvCs5DBLTqoOdVp_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 75008\n3   chromedriver                        0x00000001028dbd7c _RNvCs5DBLTqoOdVp_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 375360\n4   chromedriver                        0x000000010291afe8 _RNvCs5DBLTqoOdVp_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 634028\n5   chromedriver                        0x00000001028d007c _RNvCs5DBLTqoOdVp_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 326976\n6   chromedriver                        0x0000000102d76884 cxxbridge1$str$ptr + 2831984\n7   chromedriver                        0x0000000102d79fcc cxxbridge1$str$ptr + 2846136\n8   chromedriver                        0x0000000102d5b578 cxxbridge1$str$ptr + 2720612\n9   chromedriver                        0x0000000102d7a850 cxxbridge1$str$ptr + 2848316\n10  chromedriver                        0x0000000102d4b640 cxxbridge1$str$ptr + 2655276\n11  chromedriver                        0x0000000102d9e194 cxxbridge1$str$ptr + 2994048\n12  chromedriver                        0x0000000102d9e310 cxxbridge1$str$ptr + 2994428\n13  chromedriver                        0x0000000102daf85c cxxbridge1$str$ptr + 3065416\n14  libsystem_pthread.dylib             0x000000019a24dc08 _pthread_start + 136\n15  libsystem_pthread.dylib             0x000000019a248ba8 thread_start + 8\n"
+}
