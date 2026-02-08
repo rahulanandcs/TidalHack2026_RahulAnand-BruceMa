@@ -48,7 +48,6 @@ class CareerFairScraper:
             'url': url,
             'scraped_at': datetime.now().isoformat(),
             'company_name': None,
-            'tags':None,
             'about': None,
             'we_are_looking_for': None,
             'organization_profile': {},
@@ -74,8 +73,7 @@ class CareerFairScraper:
             except Exception as e:
                 print(f"Error finding company name: {e}")
             
-            company_tags = self.driver.find_element(By.CSS_SELECTOR, 'space-top-xs text-truncate')
-            employer_data['tags'] = company_tags
+    
 
             # Extract all section headings and their content
             sections = self.extract_sections()
