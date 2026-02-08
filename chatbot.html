@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>mycollegeapp</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta charset="UTF-8">
+        <link rel="icon"  href="images/mycollegeappLogoNoWords.png">
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="navbar.css">
+        <script src="https://kit.fontawesome.com/c453ab086d.js" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    </head>
+    <body>
+        <header id="header">
+            <div id="navbarRoot">
+                <nav id="navbar">
+                    <div id="LogoNav">
+                        <a href="index.html" rel="noopener noreferrer">
+                            <img id="logo" src="images/mycollegappShrunk.png" alt="mycollegeappLogo">
+                        </a>
+                    </div>
+
+
+                    <div id="userDiv">
+                        <img id="userLogo" src="images/bwProfile.png">
+                    </div>
+
+
+                    <!-- DROPDOWN -->
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <!-- Logged Out View -->
+                        <div id="loggedOutView">
+                            <div class="signin-title"> Sign In </div>
+                            <div id="googleSignInBtn"></div>
+                        </div>
+
+                        <!-- Logged In View -->
+                        <div id="loggedInView" style="display:none;">
+                            <h4 id="userName">User Name</h4>
+                            <p id="userEmail">email@example.com</p>
+                            <div class="divider"></div>
+                            <div class="dropdown-item" id="settingsBtn"> Settings </div>
+                            <div class="dropdown-item" id="signOutBtn"> Sign Out </div>
+                        </div>
+                    </div>
+
+
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <!-- Navbar-->
+            <div id="root"></div>
+
+
+            <div id="fileBox">
+
+            </div>
+        </main>
+
+        <script>
+            function scrollSlider(direction) 
+            {
+                const slider = document.getElementById('imageSlider');
+                const scrollAmount = 320; // adjust based on image width + gap
+                slider.scrollBy
+                ({
+                    left: direction * scrollAmount,
+                    behavior: 'smooth'
+                });
+            }
+        </script>
+
+        <script type="text/babel" src="react.js"></script>
+        <script type="text/babel" src="app.js"></script>
+
+        <script>
+            //set up constants and assign it to ids
+            const userDiv = document.getElementById("userDiv");
+            const userLogo = document.getElementById("userLogo");
+            const profileDropdown = document.getElementById("profileDropdown");
+            const loggedOutView = document.getElementById("loggedOutView");
+            const loggedInView = document.getElementById("loggedInView");
+            const googleSignInBtn = document.getElementById("googleSignInBtn");
+            const userNameEl = document.getElementById("userName");
+            const userEmailEl = document.getElementById("userEmail");
+            const signOutBtn = document.getElementById("signOutBtn");
+
+            
+            let user = null;
+            const pastelColors = ['#FFE0E0', '#f7f4cd', '#E8EAF6', '#FFF3E0', '#E8F5E9'];
+
+            const savedUser = localStorage.getItem("user");
+            if (savedUser) {
+            user = JSON.parse(savedUser);
+            showLoggedInUser(user);
+            }
+
+            function showLoggedInUser(user) {
+            userNameEl.textContent = user.name;
+            userEmailEl.textContent = user.email;
+            loggedOutView.style.display = "none";
+            loggedInView.style.display = "block";
+
+            const initial = user.name.charAt(0).toUpperCase();
+            const bgColor = pastelColors[Math.floor(Math.random() * pastelColors.length)];
+            const textColor = bgColor === "#000000" ? "#fff" : "#000";
+
+            const avatar = document.createElement("div");
+            avatar.classList.add("avatar");
+            avatar.textContent = initial;
+            avatar.style.height = "2.8rem";
+            avatar.style.width = "2.8rem";
+            avatar.style.borderRadius = "300px";
+            avatar.style.backgroundColor = bgColor;
+            avatar.style.display = "flex";
+            avatar.style.alignItems = "center";
+            avatar.style.justifyContent = "center";
+            avatar.style.fontSize = "22px";
+            avatar.style.fontWeight = "bold";
+            avatar.style.boxShadow = "0px 4px 4px rgba(0, 0, 0, 0.25)";
+            avatar.style.transition = "transform 0.05s ease-in-out";
+            avatar.style.color = textColor;
+
+            avatar.addEventListener("mouseenter", () => {
+                avatar.style.transform = "scale(1.05)";
+            });
+            avatar.addEventListener("mouseleave", () => {
+                avatar.style.transform = "scale(1)";
+            });
+
+            userDiv.replaceChild(avatar, userLogo);
+            }
+
+
+            /* 1. Initialize Google Sign-In */
+            window.onload = function() {
+            google.accounts.id.initialize({
+                client_id: "217167150963-rsfriq586e72rb60kmn76u1q3e3cgcpj.apps.googleusercontent.com", 
+                callback: handleCredentialResponse,
+                auto_select: true   // ensures that the user stays signed in when first logging in (so not pain in the butt)
+            });
+
+            google.accounts.id.renderButton(
+                googleSignInBtn,
+                { theme: "outline", size: "large", text: "continue_with", width: 220 }
+            );
+
+            const savedUser = localStorage.getItem("user");
+            if (savedUser) {
+            user = JSON.parse(savedUser);
+            updateUIForSignedInUser();
+            }
+
+
+            // 2. silent sign-in automatically
+            google.accounts.id.prompt(); // signs in silently if the user granted permission
+            };
+
+
+            /* 3. Handle Google Credential Response */
+            function handleCredentialResponse(response) {
+            const data = parseJwt(response.credential);
+            user = {
+                name: data.name,
+                email: data.email,
+            };
+
+            localStorage.setItem("user", JSON.stringify(user));
+
+            updateUIForSignedInUser();
+            }
+
+            function updateUIForSignedInUser() {
+            if (!user) return;
+
+            userNameEl.textContent = user.name;
+            userNameEl.style.marginTop = ".33rem";
+            userNameEl.style.marginBottom = ".5rem";
+            userEmailEl.textContent = user.email;
+            userEmailEl.style.marginTop = ".33rem";
+            loggedOutView.style.display = "none";
+            loggedInView.style.display = "block";
+
+            // Avatar setup
+            const initial = user.name.charAt(0).toUpperCase();
+            const bgColor = pastelColors[Math.floor(Math.random() * pastelColors.length)];
+            const textColor = bgColor === "#000000" ? "#fff" : "#000";
+
+            const avatar = document.createElement("div");
+            avatar.classList.add("avatar");
+            avatar.textContent = initial;
+            avatar.style.height = "2.8rem";
+            avatar.style.width = "2.8rem";
+            avatar.style.borderRadius = "300px";
+            avatar.style.backgroundColor = bgColor;
+            avatar.style.display = "flex";
+            avatar.style.alignItems = "center";
+            avatar.style.justifyContent = "center";
+            avatar.style.fontSize = "22px";
+            avatar.style.fontWeight = "bold";
+            avatar.style.transition = "transform 0.05s ease-in-out";
+            avatar.style.color = textColor;
+
+            avatar.addEventListener("mouseenter", () => {
+                avatar.style.transform = "scale(1.05)";
+            });
+            avatar.addEventListener("mouseleave", () => {
+                avatar.style.transform = "scale(1)";
+            });
+
+            userDiv.replaceChild(avatar, userLogo);
+            }
+
+
+            /* Helper: Decodes Google Cloud JWT Token */
+            function parseJwt(token) {
+            const base64Url = token.split(".")[1];
+            const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+            const jsonPayload = decodeURIComponent(atob(base64).split("").map(function(c) {
+                return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(""));
+            return JSON.parse(jsonPayload);
+            }
+
+            /* 3.5 Restore User If Already Logged In (on page load) */
+            window.addEventListener("DOMContentLoaded", () => {
+            const savedUser = localStorage.getItem("user");
+            if (savedUser) {
+                user = JSON.parse(savedUser);
+                restoreUserUI(user);
+            }
+            });
+
+            /* Helper: re-creates the UI for a saved user */
+            function restoreUserUI(user) {
+            userNameEl.textContent = user.name;
+            userEmailEl.textContent = user.email;
+            loggedOutView.style.display = "none";
+            loggedInView.style.display = "block";
+
+            const initial = user.name.charAt(0).toUpperCase();
+            const bgColor = pastelColors[Math.floor(Math.random() * pastelColors.length)];
+            const textColor = bgColor === "#000000" ? "#fff" : "#000";
+
+            const avatar = document.createElement("div");
+            avatar.classList.add("avatar");
+            avatar.textContent = initial;
+            avatar.style.height = "2.8rem";
+            avatar.style.width = "2.8rem";
+            avatar.style.borderRadius = "300px";
+            avatar.style.backgroundColor = bgColor;
+            avatar.style.display = "flex";
+            avatar.style.alignItems = "center";
+            avatar.style.justifyContent = "center";
+            avatar.style.fontSize = "22px";
+            avatar.style.fontWeight = "bold";
+            avatar.style.transition = "transform 0.05s ease-in-out";
+            avatar.style.color = textColor;
+
+            avatar.addEventListener("mouseenter", () => avatar.style.transform = "scale(1.05)");
+            avatar.addEventListener("mouseleave", () => avatar.style.transform = "scale(1)");
+
+            userDiv.replaceChild(avatar, userLogo);
+            }
+
+
+            /* 4. Toggle dropdown visibility */
+            userDiv.addEventListener("click", (e) => {
+            e.stopPropagation();
+            profileDropdown.classList.toggle("show");
+            });
+
+            /* 5. Close dropdown if clicking outside */
+            document.addEventListener("click", (e) => {
+            if (!userDiv.contains(e.target) && !profileDropdown.contains(e.target)) {
+                profileDropdown.classList.remove("show");
+            }
+            });
+
+
+            /* 6. Sign Out Logic */
+            signOutBtn.addEventListener("click", () => {
+            user = null;
+            localStorage.removeItem("user");   // Clear the saved login from 3.5
+            google.accounts.id.disableAutoSelect();
+            
+
+            /* Transition Between Signed In and Out */
+            
+
+            // Revert To The B&W Profile Img
+            const img = document.createElement("img");
+            img.id = "userLogo";
+            img.src = "images/bwProfile.png";
+            img.alt = "Profile Icon";
+            img.style.height = "3rem";
+            img.style.borderRadius = "300px";
+            img.style.boxShadow = "0px 4px 4px rgba(255, 255, 255, 0.25)";
+            img.style.objectFit = "cover";
+
+            const oldAvatar = userDiv.querySelector(".avatar");
+            if (oldAvatar) userDiv.replaceChild(img, oldAvatar);
+
+            loggedOutView.style.display = "block";
+            loggedInView.style.display = "none";
+            profileDropdown.classList.remove("show");
+
+            localStorage.removeItem("user");
+            });
+        </script>
+    </body>
+</html>
