@@ -1,6 +1,9 @@
 from google import genai
+import os
+from dotenv import load_dotenv
 
-client = genai.Client(api_key = "AIzaSyCWpGU-Ld_XWThx5VzWuo08_GPFPvYyQbU")
+client = os.getenv('client')
+gemini_client = genai.Client(api_key=client)
 
 #image = Image.open()
 resume_file = open("C:/Users/41866/.vscode/CareerCompass/resume_information.txt", "r")

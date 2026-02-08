@@ -6,7 +6,7 @@ Run this to find the correct model name for your API key
 from google import genai
 
 # Your API key
-API_KEY = "AIzaSyAKN_O4pgaw2ljHvk_VyBPoODOIpvEQnU0"
+API_KEY = "AIzaSyC4TWd8GiAItBBdljmkQnYdKcVbK9dseZ0"
 
 print("="*70)
 print("GEMINI API TEST")

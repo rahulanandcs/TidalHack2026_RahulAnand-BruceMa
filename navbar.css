@@ -192,14 +192,14 @@ button#leftArrowButton.sm-toggle:active {
   font-size: 2rem;
   cursor: pointer;
   line-height: 1;
-  letter-spacing: -2px;
+  letter-spacing: -1px;
   
   transition:
     background 0.25s,
     color 0.25s;
   display: inline-block;
   text-decoration: none;
-  padding-right: .75em;
+  padding-right: 1em;
 }
 
 

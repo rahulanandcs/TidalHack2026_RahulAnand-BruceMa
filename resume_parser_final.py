@@ -9,32 +9,23 @@ import json
 from typing import Dict, List, Optional
 from dataclasses import dataclass, asdict
 
+import nltk
+nltk.download('stopwords')
 # Try to import pyresparser, fall back to PyPDF2 if not available
-try:
-    # First ensure NLTK data is available
-    import nltk
-    try:
-        from nltk.corpus import stopwords
-        _ = stopwords.words('english')
-    except LookupError:
-        print("Downloading required NLTK data (one-time setup)...")
-        nltk.download('stopwords', quiet=True)
-        nltk.download('punkt', quiet=True)
-        nltk.download('averaged_perceptron_tagger', quiet=True)
-        nltk.download('maxent_ne_chunker', quiet=True)
-        nltk.download('words', quiet=True)
-        print("✓ NLTK data downloaded!")
-    
-    from pyresparser import ResumeParser as PyResumeParser
-    PYRESPARSER_AVAILABLE = True
-except ImportError as e:
-    PYRESPARSER_AVAILABLE = False
-    import PyPDF2
-    if 'pyresparser' in str(e):
-        print("Note: pyresparser not installed. Using basic parser.")
-        print("For better results, run: pip install pyresparser")
 
-# Try to import pdfminer for better text extraction
+# PDF & Resume parsing dependencies
+PYRESPARSER_AVAILABLE = False
+PDFMINER_AVAILABLE = False
+PYPDF2_AVAILABLE = False
+
+# Try PyPDF2
+try:
+    import PyPDF2
+    PYPDF2_AVAILABLE = True
+except ImportError:
+    PYPDF2_AVAILABLE = False
+
+# Try pdfminer3
 try:
     from pdfminer3.layout import LAParams
     from pdfminer3.pdfpage import PDFPage
@@ -45,7 +36,13 @@ try:
 except ImportError:
     PDFMINER_AVAILABLE = False
 
-
+# Try pyresparser
+try:
+    from pyresparser import ResumeParser as PyResumeParser
+    PYRESPARSER_AVAILABLE = True
+except ImportError:
+    PYRESPARSER_AVAILABLE = False
+    
 @dataclass
 class ContactInfo:
     """Contact information extracted from resume"""

@@ -20,7 +20,7 @@
 body{ 
   margin: 0; 
   display: block; 
-  background-color: #F5F5F5;
+  background-color: #E8F4F8;
   overflow-x: hidden; 
   height: 100%;
   font-family: 'PoppinsM', sans-serif;
@@ -197,6 +197,7 @@ body #header {
 
 :root {
   --sidebar-w: clamp(260px, 38vw, 300px);
+  --sidebar-edge: clamp(130px, 19vw, 150px);
 }
 
 
@@ -281,24 +282,55 @@ body.sidebar-open #mainContent {
   position: relative; 
 }
 
-.content h1{
-  font-family: PoppinsB;
+#cont h1{
+  font-family: PoppinsB, sans-serif;
   font-size: 3.5rem;
   margin: 1rem 0 .5rem 0;
   padding-bottom: 1rem;
 }
 
-.content p{
-  font-family: PoppinsSB;
+#cont p{
+  font-family: PoppinsSB, sans-serif;
   font-size: 1.25rem;
   margin: .5rem 0 .25rem 0;
   padding-bottom: 2rem;
 }
 
+.container {
+  transition: transform 0.35s ease, width 0.35s ease;
+  position: relative;
+  transform: translateX(0);
+  margin: auto;
+  margin-top: 1.5rem;
+}
 
+body.sidebar-open .container {
+  transform: translateX(var(--sidebar-edge));
+  margin-top: 1.5rem;
+}
 
-
-
+#cont h1{
+  transition: transform 0.35s ease, width 0.35s ease;
+}
+#cont p{
+  transition: transform 0.35s ease, width 0.35s ease;
+}
+#pushButton
+{
+  transition: transform 0.35s ease, width 0.35s ease;
+}
+body.sidebar-open #cont h1{
+  transform: translateX(var(--sidebar-edge));
+}
+body.sidebar-open #cont p{
+  transform: translateX(var(--sidebar-edge));
+}
+body.sidebar-open #pushButton{
+  transform: translateX(var(--sidebar-edge));
+}
+.user-input-section p{
+  transition: transform 0.35s ease, width 0.35s ease;
+}
 
 
 @media (max-width: 500px) {

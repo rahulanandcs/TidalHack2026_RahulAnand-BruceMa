@@ -9,6 +9,7 @@ import os
 import json
 from werkzeug.utils import secure_filename
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Import your parsers
 from resume_parser_final import FinalResumeParser
@@ -27,7 +28,8 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max
 
 # Initialize Gemini
-GEMINI_API_KEY = "AIzaSyD8_gbsuBcOWQvILCYMApC5bP96-eqKnVw"
+load_dotenv()
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 gemini_client = genai.Client(api_key=GEMINI_API_KEY)
 
 # Store parsed data in memory (resets when server restarts)
@@ -154,7 +156,7 @@ def scrape_companies():
 @app.route('/api/analyze', methods=['POST', 'OPTIONS'])
 def analyze_career():
     """
-    Run Gemini analysis using resume + company data
+    Run Gemini analysis using resume + company data + user input
     Called from chatbot.html
     """
     if request.method == 'OPTIONS':
@@ -164,6 +166,10 @@ def analyze_career():
         print("\n" + "="*50)
         print("Starting Gemini Analysis...")
         print("="*50)
+        
+        # Get user input from request
+        data = request.get_json() or {}
+        user_input = data.get('user_input', '').strip()
         
         # Read the files
         with open("resume_information.txt", "r", encoding='utf-8') as f:
@@ -175,9 +181,12 @@ def analyze_career():
         with open("response_format.txt", "r", encoding='utf-8') as f:
             format_text = f.read()
         
-        # Build the question
-        question = (format_text + "\n\n\nThis is my resume: \n" + resume +
-                   "\n\n\n" + "These are the company information: \n" + companies)
+        # Build the question with optional user input
+        question = format_text + "\n\n\nThis is my resume: \n" + resume + "\n\n\n" + "These are the company information: \n" + companies
+        print(question)
+        if user_input:
+            print(f"✓ User provided additional context: {len(user_input)} characters")
+            question += f"\n\n\nADDITIONAL CONTEXT FROM USER:\n{user_input}\n\nPlease take this additional information into account when providing your analysis."
         
         print("✓ Files read successfully")
         print(f"✓ Question length: {len(question)} characters")
@@ -187,8 +196,8 @@ def analyze_career():
         # Try multiple model names in order of preference
         models_to_try = [
             'gemini-2.5-flash',
-            'models/gemini-2.5-pro',
-            'models/gemini-2.0-flash'
+            'gemini-2.5-pro',
+            'gemini-2.0-flash'
         ]
         
         response = None
@@ -216,12 +225,14 @@ def analyze_career():
         
         # Store in session
         current_session['analysis_result'] = result
+        current_session['user_input'] = user_input
         
         return jsonify({
             'success': True,
             'result': result,
             'resume_name': current_session.get('resume_json', {}).get('contact', {}).get('name'),
-            'company_name': current_session.get('companies_json', {}).get('company_name')
+            'company_name': current_session.get('companies_json', {}).get('company_name'),
+            'used_user_input': bool(user_input)
         })
     
     except FileNotFoundError as e:

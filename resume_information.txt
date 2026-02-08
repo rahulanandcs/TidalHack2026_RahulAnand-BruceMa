@@ -1,44 +1,52 @@
-Ronghui (Bruce) Ma
-Brucema234@tamu.edu | linkedin.com/in/bruce-ma07| github.com/Bruce-Ma234
-Education														
-Texas A&M University, College Station, TX                                                                                                                                                                                                                 
-Expected graduation in 2029 with Bachelor of Science in Computer Engineering, GPA 4.0
-Relevant Coursework: Python Programming, C++ Programming
+RESUME INFORMATION
+==================================================
 
-Technical Skills														                                                                                                                                                                                                    
-Java, Python, exposed to various other programming languages, game development, robotics
+Name: 
+Email: rahulanandbus@gmail.com
+Phone: (214) 557-1888
+Location: None
+LinkedIn: LinkedIn profile mentioned
+GitHub: GitHub profile mentioned
 
-Project and Collaboration Experience											
-Aggies Invent Pantex
-Led efforts in a team robotic project development addressing a need statement for safe handling of high explosive materials for Pantex.
-Prototype is designed to handle about 3 times the weight of high explosive materials as the company typically transfers.
-Experienced real-world industry work and formed excellent prototyping and pitching skills. Earned best presentation award.
-Aggie Quest
-Developed an app with a team aimed to monitor and improve students’ mental health awareness by at least 100% by generating a task everyday that adjusts in difficulty depending on user performance. 
-Built using Python algorithms and website development in a 24-hour hackathon. Tech stack: Python, HTML, CSS, Javascript, Flask.
-Akinator
-Determines an item from asking user questions to a user. Uses binary search trees and traversals to eliminate certain branches of possibilities and arrive at an answer. Tech stack: Java.
-Minesweeper
-Remake of Minesweeper. Applies Java graphics, 2D arrays, and flood fill algorithm to generate mines and control appropriate square tiles to open upon a user click. Tech stack: Java.
+SKILLS:
+Java, Python, JavaScript, React, HTML, CSS, GitHub, Visual Studio Code, Figma, Premiere Pro, Photoshop, Canva, Excel, Word, Powerpoint
 
-Work Experience													                                                                                                                                                                                                             
-iCode: Intern
-Taught at a coding academy and instructed 12 courses with around 5 students each between ages of 5-13 STEM subjects such as block coding, Python, Ruby, game development with Unity, Construct 3, and robotics for 2 years.
-Developed exceptional teaching experience, communication, and problem solving skills by planning 2 lesson plans per week to convey computer and engineering related material while also making it as enjoyable as possible for students.
-TAMU ThinkTank: Website Developer
-Assumed the role of backend developer for a project and competition focused university organization that processes 100 - 200 applications each semester. 
-Served as a secondary team lead and communicated effectively with team members to fulfill tasks given. 
-Gained knowledge of real-life work environments and expectations. Tech stack: Typescript.
+EDUCATION:
+- BS: Computer Science | Craig & Galen Brown Engineering Honors
+  Texas A&M University | College Station, TX
 
-Leadership Experience													
-Boy Scouts of America (Patrol Leader) - Enhanced team awareness, leadership abilities, discipling skills, and organization skills by administering and coordinating events for campouts, volunteering work, and other planned activities.                                                                                         
-Aggies in Tech - Business technology certificate program emphasizing leadership, professional development, industry affiliations, marketing, and academic rigor.
+EXPERIENCE:
+- Co-Founder & Frontend Developer at Syncria
+  • Co-founded AI-powered platform that consolidates student data from multiple sources, organizing it by class and recency
+  • Developing the site from scratch, including frontend architecture and SQL databases using React, TypeScript, and Python
+  • Participating in business operations, including market research, strategy planning, and hiring an intern for data scraping
 
-University Organizations												
-TAMU ThinkTank
-Texas A&M Computing Society
-Aggie Competitive Programming Club
+- Freshman Engineer at FLiNT
 
-Other Skills and Interests												
-Languages - English, Mandarin.
-Interests - Game development, chess, cycling, and hiking.
+- Front-End Development Intern at TechMeKid
+
+- AI Agent Development Intern at NeuralSeek
+
+- Web Developer & Outreach at Verses & Vibes Nonprofit
+  • Conceptualized and proposed a $1,000 engineering project to faculty for a street-legal vehicle, integrating Google Coral TPU,
+
+-  at dual-camera sensors, and microcontroller systems to enable lane-assist functionality and real-time autonomous control
+  • Relaunched Texas A&M-affiliated club website with leadership, improving UX and engagement for hundreds of annual visitors
+  • Redesigned a client’s website through leading development of the events page, and generated a 30% increase in impressions
+  • Translated Figma prototypes into responsive, accessible layouts using HTML, CSS, and JavaScript
+
+- Kumon at Integrated mobile support for highlighting events, volunteer opportunities, and awareness; 20+ weekly visits
+
+- Flower Mound, TX at Center Assistant
+  December 2022 – December 2024
+  • Promoted twice within two years for consistent performance, accountability, and increased responsibilities
+  • Taught kids aged 5 – 16 in Math topics ranging from arithmetic to calculus, utilized Kumon’s proprietary software and Excel
+
+-  at UT Austin IOS App Development Camp
+  • Completed 125+ hours of Swift training under Prof. William Bulko in July 2024
+
+- Academic Competitions & Recognition at MHS Stocks Club – Vice President
+  • Organized virtual stock market competitions and grew membership to 30+ through targeted promotional flyers
+  • Social Studies UIL – Captain | District 3rd, Region 5th (2023–2024)
+  • DECA | State Competitor (2024–2025) and Academic Decathlon | Regional Medalist, Gold Team Medalist (2024)
+
