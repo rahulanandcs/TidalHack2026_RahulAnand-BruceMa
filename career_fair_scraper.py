@@ -452,7 +452,7 @@ class CareerFairScraper:
 def main():
     """Example usage"""
     # The URL you provided
-    url = "https://tamu-csm.symplicity.com/events/4e14310febad2eb8767770a213251a7f/employers/01f5016d99e193977c1bf344ba0b0a15"
+    url = "https://tamu-csm.symplicity.com/students/app/career-fairs/4e14310febad2eb8767770a213251a7f/employers/01f5016d99e193977c1bf344ba0b0a15"
     
     # Create scraper instance
     scraper = CareerFairScraper(headless=True)

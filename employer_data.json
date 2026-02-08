@@ -1,0 +1,12 @@
+{
+  "url": "https://tamu-csm.symplicity.com/students/app/career-fairs/4e14310febad2eb8767770a213251a7f/employers/01f5016d99e193977c1bf344ba0b0a15",
+  "scraped_at": "2026-02-07T21:32:58.466056",
+  "company_name": "Sign In",
+  "tags": null,
+  "about": null,
+  "we_are_looking_for": null,
+  "organization_profile": {},
+  "event_details": {},
+  "all_text_content": null,
+  "error": "Message: no such element: Unable to locate element: {\"method\":\"css selector\",\"selector\":\"space-top-xs text-truncate\"}\n  (Session info: chrome=144.0.7559.133); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#nosuchelementexception\nStacktrace:\nSymbols not available. Dumping unresolved backtrace:\n\t0x7ff7e81ef3d5\n\t0x7ff7e81ef430\n\t0x7ff7e7f910bd\n\t0x7ff7e7fec2fe\n\t0x7ff7e7fec60c\n\t0x7ff7e803d187\n\t0x7ff7e8039d08\n\t0x7ff7e7fdcb0c\n\t0x7ff7e7fdda53\n\t0x7ff7e84cb470\n\t0x7ff7e84c586d\n\t0x7ff7e84e621a\n\t0x7ff7e820b235\n\t0x7ff7e8213a5c\n\t0x7ff7e81f8844\n\t0x7ff7e81f89f6\n\t0x7ff7e81deb87\n\t0x7fffe569e8d7\n\t0x7fffe694c53c\n"
+}

@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CareerCompass</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta charset="UTF-8">
+        <link rel="icon"  href="images/miniCCLogo.png">
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="navbar.css">
+        <script src="https://kit.fontawesome.com/c453ab086d.js" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    </head>
+    <body>
+        <header id="header">
+            <div id="navbarRoot">
+                <nav id="navbar">
+                    <div id="LogoNav">
+                        <a href="winter_penguin_page.html" rel="noopener noreferrer">
+                            <img id="logo" src="images/careerCompassLogo.png" alt="careerCompassLogo">
+                        </a>
+                    </div>
+
+
+                    <div id="userDiv">
+                        <img id="userLogo" src="images/bwProfile.png">
+                    </div>
+
+
+                    <!-- Dropdown -->
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <!-- Logged Out View -->
+                        <div id="loggedOutView">
+                            <div class="signin-title"> Sign In </div>
+                            <div id="googleSignInBtn"></div>
+                        </div>
+
+                        <!-- Logged In View -->
+                        <div id="loggedInView" style="display:none;">
+                            <h4 id="userName">User Name</h4>
+                            <p id="userEmail">user@example.com</p>
+                            <div class="divider"></div>
+                            <div class="dropdown-item" id="settingsBtn"> Settings </div>
+                            <div class="dropdown-item" id="signOutBtn"> Sign Out </div>
+                        </div>
+                    </div>
+
+
+                </nav>
+            </div>
+        </header>
+
+        <div id="root"></div>
+
+        <style>
+        :root {
+            --ice-blue: #E8F4F8;
+            --deep-blue: #1A4D6D;
+            --frost-white: #FFFFFF;
+            --snow-shadow: #B8D8E8;
+            --penguin-black: #2C3E50;
+            --accent-teal: #4ECDC4;
+            --warm-coral: #FF6B6B;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: var(--deep-blue);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Custom Winter Background with SVG */
+        .winter-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(180deg, #A8D8EA 0%, #E8F4F8 50%, #FFFFFF 100%);
+        }
+
+        /* Animated Snowflakes */
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            z-index: -1;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.5em;
+            animation: fall linear infinite;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* Ice Mountains SVG Background Layer */
+        .mountains {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            z-index: -1;
+        }
+
+        .mountains svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Penguin Colony Illustration */
+        .penguin-scene {
+            position: fixed;
+            bottom: 8%;
+            right: 10%;
+            z-index: 0;
+            animation: waddle 3s ease-in-out infinite;
+        }
+
+        @keyframes waddle {
+            0%, 100% { transform: translateX(0) rotate(0deg); }
+            25% { transform: translateX(-5px) rotate(-2deg); }
+            75% { transform: translateX(5px) rotate(2deg); }
+        }
+
+        .penguin {
+            width: 80px;
+            height: 100px;
+            position: relative;
+            display: inline-block;
+            margin: 0 15px;
+        }
+
+        .penguin-body {
+            width: 80px;
+            height: 100px;
+            background: linear-gradient(135deg, #2C3E50 0%, #34495E 100%);
+            border-radius: 40% 40% 30% 30%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .penguin-belly {
+            width: 50px;
+            height: 70px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 20px;
+            left: 15px;
+        }
+
+        .penguin-eye {
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 18px;
+        }
+
+        .penguin-eye.left { left: 20px; }
+        .penguin-eye.right { right: 20px; }
+
+        .penguin-pupil {
+            width: 6px;
+            height: 6px;
+            background: black;
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+        }
+
+        .penguin-beak {
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 12px solid var(--warm-coral);
+            position: absolute;
+            top: 28px;
+            left: 32px;
+        }
+
+        .penguin-wing {
+            width: 25px;
+            height: 50px;
+            background: linear-gradient(135deg, #2C3E50 0%, #34495E 100%);
+            border-radius: 50% 0 0 50%;
+            position: absolute;
+            top: 30px;
+        }
+
+        .penguin-wing.left {
+            left: -8px;
+            transform: rotate(20deg);
+            animation: wave-left 2s ease-in-out infinite;
+        }
+
+        .penguin-wing.right {
+            right: -8px;
+            transform: rotate(-20deg) scaleX(-1);
+            animation: wave-right 2s ease-in-out infinite;
+        }
+
+        @keyframes wave-left {
+            0%, 100% { transform: rotate(20deg); }
+            50% { transform: rotate(40deg); }
+        }
+
+        @keyframes wave-right {
+            0%, 100% { transform: rotate(-20deg) scaleX(-1); }
+            50% { transform: rotate(-40deg) scaleX(-1); }
+        }
+
+        .penguin-feet {
+            width: 30px;
+            height: 15px;
+            background: var(--warm-coral);
+            border-radius: 50% 50% 0 0;
+            position: absolute;
+            bottom: -8px;
+        }
+
+        .penguin-feet.left { left: 10px; }
+        .penguin-feet.right { right: 10px; }
+
+        /* Ice Crystals Decoration */
+        .ice-crystal {
+            position: fixed;
+            font-size: 2em;
+            color: rgba(78, 205, 196, 0.3);
+            animation: sparkle 3s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.3; transform: scale(1) rotate(0deg); }
+            50% { opacity: 0.8; transform: scale(1.2) rotate(180deg); }
+        }
+
+        /* Content Container */
+        .content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 100px 40px;
+        }
+
+        h1 {
+            font-family: 'Fraunces', serif;
+            font-size: 4.5em;
+            font-weight: 600;
+            color: var(--deep-blue);
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+            letter-spacing: -2px;
+            line-height: 1.1;
+        }
+
+        p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: var(--penguin-black);
+            margin-bottom: 30px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 18px 40px;
+            background: var(--accent-teal);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(78, 205, 196, 0.3);
+            cursor: pointer;
+            border: none;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(78, 205, 196, 0.4);
+            background: #3DBDB4;
+        }
+
+        .cta-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Aurora Effect */
+        .aurora {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(78, 205, 196, 0.1) 25%,
+                rgba(168, 216, 234, 0.15) 50%,
+                rgba(78, 205, 196, 0.1) 75%,
+                transparent 100%);
+            animation: aurora-wave 15s ease-in-out infinite;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes aurora-wave {
+            0%, 100% { transform: translateX(-20%) skewX(-5deg); opacity: 0.3; }
+            50% { transform: translateX(20%) skewX(5deg); opacity: 0.6; }
+        }
+
+        /* Result Display */
+        .result-container {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .result-container.show {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-header {
+            font-size: 1.8em;
+            color: var(--deep-blue);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .result-text {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: var(--penguin-black);
+            white-space: pre-wrap;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            color: var(--warm-coral);
+            font-weight: 600;
+        }
+    </style>
+
+    <div id="root"></div>
+    <!-- Aurora Background Effect -->
+    <div class="aurora"></div>
+
+    <!-- Winter Background -->
+    <div class="winter-background"></div>
+
+    <!-- Ice Mountains -->
+    <div class="mountains">
+        <svg viewBox="0 0 1200 400" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="mountain-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:#D4E9F2;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#FFFFFF;stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            <path d="M0,400 L0,200 L200,100 L400,180 L600,80 L800,150 L1000,100 L1200,180 L1200,400 Z" 
+                  fill="url(#mountain-gradient)" opacity="0.7"/>
+            <path d="M0,400 L0,250 L150,180 L350,240 L550,160 L750,200 L950,170 L1200,230 L1200,400 Z" 
+                  fill="url(#mountain-gradient)" opacity="0.5"/>
+            <path d="M0,400 L0,300 L250,250 L450,280 L650,240 L850,270 L1050,250 L1200,280 L1200,400 Z" 
+                  fill="#FFFFFF" opacity="0.9"/>
+        </svg>
+    </div>
+
+    <!-- Penguin Scene -->
+    <div class="penguin-scene">
+        <div class="penguin">
+            <div class="penguin-body">
+                <div class="penguin-belly"></div>
+                <div class="penguin-eye left">
+                    <div class="penguin-pupil"></div>
+                </div>
+                <div class="penguin-eye right">
+                    <div class="penguin-pupil"></div>
+                </div>
+                <div class="penguin-beak"></div>
+            </div>
+            <div class="penguin-wing left"></div>
+            <div class="penguin-wing right"></div>
+            <div class="penguin-feet left"></div>
+            <div class="penguin-feet right"></div>
+        </div>
+        <div class="penguin" style="transform: scale(0.8); margin-top: 20px;">
+            <div class="penguin-body">
+                <div class="penguin-belly"></div>
+                <div class="penguin-eye left">
+                    <div class="penguin-pupil"></div>
+                </div>
+                <div class="penguin-eye right">
+                    <div class="penguin-pupil"></div>
+                </div>
+                <div class="penguin-beak"></div>
+            </div>
+            <div class="penguin-wing left"></div>
+            <div class="penguin-wing right"></div>
+            <div class="penguin-feet left"></div>
+            <div class="penguin-feet right"></div>
+        </div>
+    </div>
+
+    <!-- Ice Crystals -->
+    <div class="ice-crystal" style="top: 15%; left: 10%;">❄</div>
+    <div class="ice-crystal" style="top: 25%; right: 15%; animation-delay: 1s;">✦</div>
+    <div class="ice-crystal" style="top: 45%; left: 20%; animation-delay: 2s;">❅</div>
+    <div class="ice-crystal" style="top: 60%; right: 25%; animation-delay: 1.5s;">❆</div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <h1>Welcome to<br>Campus Compass</h1>
+        <p>The Career Fair. Redefined. Every year, thousands of students walk into the MSC at TAMU with a stack of resumes and a knot in their stomach. 
+            Meanwhile, recruiters spend hours filtering through hundreds of generic pitches. 
+            Career Compass is the interdisciplinary bridge between Data Science and Career Development. 
+            We turn the chaos of networking into a guided experience.</p>
+        <button id="analyzeBtn" class="cta-button">Bridge the Gap. Own the Conversation.</button>
+    </div>
+
+    <!-- Result Container -->
+    <div id="resultContainer" class="result-container">
+        <div class="result-header">Your Career Analysis</div>
+        <div id="resultText" class="result-text"></div>
+    </div>
+
+    <!-- Animated Snowflakes -->
+    <script>
+        // Generate random snowflakes
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.innerHTML = ['❅', '❆', '❄'][Math.floor(Math.random() * 3)];
+            snowflake.style.left = Math.random() * 100 + '%';
+            snowflake.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            snowflake.style.animationDelay = Math.random() * 5 + 's';
+            snowflake.style.fontSize = (Math.random() * 1.5 + 0.5) + 'em';
+            snowflake.style.opacity = Math.random() * 0.6 + 0.3;
+            document.body.appendChild(snowflake);
+
+            // Remove snowflake after animation completes
+            setTimeout(() => {
+                snowflake.remove();
+            }, (parseFloat(snowflake.style.animationDuration) + parseFloat(snowflake.style.animationDelay)) * 1000);
+        }
+
+        // Create snowflakes periodically
+        setInterval(createSnowflake, 300);
+
+        // Initial snowflakes
+        for (let i = 0; i < 30; i++) {
+            setTimeout(createSnowflake, i * 100);
+        }
+
+        // API Integration
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const resultContainer = document.getElementById('resultContainer');
+        const resultText = document.getElementById('resultText');
+
+        analyzeBtn.addEventListener('click', async () => {
+            // Disable button and show loading state
+            analyzeBtn.disabled = true;
+            analyzeBtn.innerHTML = 'Analyzing...<span class="loading-spinner"></span>';
+            
+            // Hide previous results
+            resultContainer.classList.remove('show');
+
+            try {
+                // Call the backend API
+                const response = await fetch('http://localhost:5000/api/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Display the result
+                    resultText.textContent = data.result;
+                    resultContainer.classList.add('show');
+                    
+                    // Scroll to results
+                    resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                } else {
+                    // Display error
+                    resultText.innerHTML = `<span class="error-message">Error: ${data.error}</span>`;
+                    resultContainer.classList.add('show');
+                }
+            } catch (error) {
+                // Handle network errors
+                resultText.innerHTML = `<span class="error-message">Error: Unable to connect to the server. Make sure the Flask server is running.</span>`;
+                resultContainer.classList.add('show');
+                console.error('Error:', error);
+            } finally {
+                // Re-enable button
+                analyzeBtn.disabled = false;
+                analyzeBtn.textContent = 'Analyze Again';
+            }
+        });
+    </script>
+
+    </body>
+</html>
