@@ -277,24 +277,23 @@ body.sidebar-open #mainContent {
 
 
 
-
-
-
-
-
-
-
-
 #root {
   position: relative; 
 }
 
+.content h1{
+  font-family: PoppinsB;
+  font-size: 3.5rem;
+  margin: 1rem 0 .5rem 0;
+  padding-bottom: 1rem;
+}
 
-
-
-
-
-
+.content p{
+  font-family: PoppinsSB;
+  font-size: 1.25rem;
+  margin: .5rem 0 .25rem 0;
+  padding-bottom: 2rem;
+}
 
 
 
