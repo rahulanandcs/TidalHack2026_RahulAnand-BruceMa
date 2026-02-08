@@ -13,7 +13,7 @@ def after_request(response):
     return response
 
 # Initialize Gemini client with the new API
-client = genai.Client(api_key="AIzaSyCSIqtgnFftPSlrVSA8iWswlueyLZyY1cs")
+client = genai.Client(api_key="AIzaSyAKN_O4pgaw2ljHvk_VyBPoODOIpvEQnU0")
 
 @app.route('/')
 def serve_index():

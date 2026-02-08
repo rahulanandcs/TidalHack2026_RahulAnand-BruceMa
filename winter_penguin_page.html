@@ -43,7 +43,7 @@
                         <!-- Logged In View -->
                         <div id="loggedInView" style="display:none;">
                             <h4 id="userName">User Name</h4>
-                            <p id="userEmail">email@example.com</p>
+                            <p id="userEmail">user@example.com</p>
                             <div class="divider"></div>
                             <div class="dropdown-item" id="settingsBtn"> Settings </div>
                             <div class="dropdown-item" id="signOutBtn"> Sign Out </div>
@@ -294,12 +294,19 @@
             font-size: 1.1em;
             transition: all 0.3s ease;
             box-shadow: 0 10px 30px rgba(78, 205, 196, 0.3);
+            cursor: pointer;
+            border: none;
         }
 
         .cta-button:hover {
             transform: translateY(-3px);
             box-shadow: 0 15px 40px rgba(78, 205, 196, 0.4);
             background: #3DBDB4;
+        }
+
+        .cta-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
         /* Aurora Effect */
@@ -323,6 +330,69 @@
         @keyframes aurora-wave {
             0%, 100% { transform: translateX(-20%) skewX(-5deg); opacity: 0.3; }
             50% { transform: translateX(20%) skewX(5deg); opacity: 0.6; }
+        }
+
+        /* Result Display */
+        .result-container {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .result-container.show {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-header {
+            font-size: 1.8em;
+            color: var(--deep-blue);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .result-text {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: var(--penguin-black);
+            white-space: pre-wrap;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            color: var(--warm-coral);
+            font-weight: 600;
         }
     </style>
 
@@ -400,7 +470,13 @@
             Meanwhile, recruiters spend hours filtering through hundreds of generic pitches. 
             Career Compass is the interdisciplinary bridge between Data Science and Career Development. 
             We turn the chaos of networking into a guided experience.</p>
-        <a href="index.html" class="cta-button">Bridge the Gap. Own the Conversation.</a>
+        <button id="analyzeBtn" class="cta-button">Bridge the Gap. Own the Conversation.</button>
+    </div>
+
+    <!-- Result Container -->
+    <div id="resultContainer" class="result-container">
+        <div class="result-header">Your Career Analysis</div>
+        <div id="resultText" class="result-text"></div>
     </div>
 
     <!-- Animated Snowflakes -->
@@ -430,25 +506,57 @@
         for (let i = 0; i < 30; i++) {
             setTimeout(createSnowflake, i * 100);
         }
+
+        // API Integration
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const resultContainer = document.getElementById('resultContainer');
+        const resultText = document.getElementById('resultText');
+
+        analyzeBtn.addEventListener('click', async () => {
+            // Disable button and show loading state
+            analyzeBtn.disabled = true;
+            analyzeBtn.innerHTML = 'Analyzing...<span class="loading-spinner"></span>';
+            
+            // Hide previous results
+            resultContainer.classList.remove('show');
+
+            try {
+                // Call the backend API
+                const response = await fetch('http://localhost:5000/api/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Display the result
+                    resultText.textContent = data.result;
+                    resultContainer.classList.add('show');
+                    
+                    // Scroll to results
+                    resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                } else {
+                    // Display error
+                    resultText.innerHTML = `<span class="error-message">Error: ${data.error}</span>`;
+                    resultContainer.classList.add('show');
+                }
+            } catch (error) {
+                // Handle network errors
+                resultText.innerHTML = `<span class="error-message">Error: Unable to connect to the server. Make sure the Flask server is running.</span>`;
+                resultContainer.classList.add('show');
+                console.error('Error:', error);
+            } finally {
+                // Re-enable button
+                analyzeBtn.disabled = false;
+                analyzeBtn.textContent = 'Analyze Again';
+            }
+        });
     </script>
 
-        <script>
-            function scrollSlider(direction) 
-            {
-                const slider = document.getElementById('imageSlider');
-                const scrollAmount = 320; // adjust based on image width + gap
-                slider.scrollBy
-                ({
-                    left: direction * scrollAmount,
-                    behavior: 'smooth'
-                });
-            }
-        </script>
-
-        <script type="text/babel" src="react.js"></script>
-        <script type="text/babel" src="app.js"></script>
-
-
-
+    <script type="text/babel" src="react.js"></script>
+    <script type="text/babel" src="app.js"></script>
     </body>
 </html>

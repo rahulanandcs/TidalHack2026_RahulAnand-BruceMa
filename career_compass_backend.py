@@ -1,6 +1,6 @@
 from google import genai
 
-client = genai.Client(api_key = "AIzaSyCWpGU-Ld_XWThx5VzWuo08_GPFPvYyQbU")
+client = genai.Client(api_key = "AIzaSyAKN_O4pgaw2ljHvk_VyBPoODOIpvEQnU0")
 
 #image = Image.open()
 resume_file = open("C:/Users/41866/.vscode/CareerCompass/resume_information.txt", "r")
